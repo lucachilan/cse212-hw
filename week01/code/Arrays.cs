@@ -13,7 +13,17 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        // create a double with length space
+        double[] multiples = new double[length];
+
+        // it should first grab the length of the multiples and loop for each one
+        for(var n=0; n<length; n++)
+        {
+        // only to multiply it by the number you receive + 1 because you started in 0
+            multiples[n] = number * (n+1);
+        }
+
+        return multiples;
     }
 
     /// <summary>
@@ -29,5 +39,25 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+
+        // first, we need to check the number of elements that we need to move.
+        // for that we will check the amount from the input and create a list with that size.
+        List<int> placeHolder = new List<int>(capacity: amount);
+        // first we add the data that will go first in the new list to the placeholder
+        for(int n=data.Count-amount; n<data.Count; n++)
+        {
+            placeHolder.Add(data[n]);
+        }
+        // after that, we set the data inside the new list
+        for(int n=0; n<data.Count-amount; n++)
+        {
+            placeHolder.Add(data[n]);
+        }
+        // we clean the list
+        data.Clear();
+        // and add the new order
+        data.AddRange(placeHolder);
+    
+    
     }
 }
