@@ -11,7 +11,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3) and
     // run until the queue is empty
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: the problem was in how the people was queued, actually in the PersonQueue file, it was giving a _queue.Insert(0,person), also the turns were wrong, when the first one would run out of turns or get to 1, the whole queue would stop
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -43,7 +43,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3)
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
-    // Defect(s) Found: 
+    // Defect(s) Found: Same thing, it was giving an index 0 to the new people in the queue and people were drop early because of the person.Turns > 1, so the people had 1 less turn.
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
         var bob = new Person("Bob", 2);
@@ -85,7 +85,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: LIFO instead of FIFO, we didn't have anyway to check what happened with people with 0 turns for infinite.
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -116,7 +116,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: same thing with 0, didn't have any function to check for negative turns, also it was a LIFO instead of FIFO
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
@@ -143,7 +143,7 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Try to get the next person from an empty queue
     // Expected Result: Exception should be thrown with appropriate error message.
-    // Defect(s) Found: 
+    // Defect(s) Found: This one actually worked since the first run.
     public void TestTakingTurnsQueue_Empty()
     {
         var players = new TakingTurnsQueue();

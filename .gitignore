@@ -366,3 +366,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Agents
+**/AGENTS.md
+**/CLAUDE.md

@@ -37,18 +37,27 @@ public class TakingTurnsQueue
         {
             throw new InvalidOperationException("No one in the queue.");
         }
+        
+        Person person = _people.Dequeue();
+            // first, if the person has 0 or negative turns, it should always go to enqueue them
+        if (person.Turns <= 0)
+        {
+            _people.Enqueue(person);
+            // then, if the person has limited turns, we should minus 1
+        }
         else
         {
-            Person person = _people.Dequeue();
-            if (person.Turns > 1)
+            person.Turns -= 1;
+            // but, if we substract one and now the number is 0, that would mean that everybody would have infinite turns, so we need to filter that after the -1 we still have at least 1
+            if(person.Turns > 0)
             {
-                person.Turns -= 1;
                 _people.Enqueue(person);
             }
-
-            return person;
         }
+
+        return person;
     }
+    
 
     public override string ToString()
     {
