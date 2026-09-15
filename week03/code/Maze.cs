@@ -32,7 +32,15 @@ public class Maze
     /// </summary>
     public void MoveLeft()
     {
-        // FILL IN CODE
+        var currentSquare = (_currX, _currY);
+
+        bool canMoveLeft = _mazeMap[currentSquare][0];
+
+        if (!canMoveLeft)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currX -=1;
     }
 
     /// <summary>
@@ -42,6 +50,15 @@ public class Maze
     public void MoveRight()
     {
         // FILL IN CODE
+        var currentSquare = (_currX, _currY);
+
+        bool canMoveRight = _mazeMap[currentSquare][1];
+
+        if (!canMoveRight)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currX +=1;
     }
 
     /// <summary>
@@ -51,6 +68,15 @@ public class Maze
     public void MoveUp()
     {
         // FILL IN CODE
+        var currentSquare = (_currX, _currY);
+
+        bool canMoveUp = _mazeMap[currentSquare][2];
+
+        if (!canMoveUp)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currY -=1;
     }
 
     /// <summary>
@@ -60,6 +86,15 @@ public class Maze
     public void MoveDown()
     {
         // FILL IN CODE
+        var currentSquare = (_currX, _currY);
+
+        bool canMoveDown = _mazeMap[currentSquare][3];
+
+        if (!canMoveDown)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currY +=1;
     }
 
     public string GetStatus()
