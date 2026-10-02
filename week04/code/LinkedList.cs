@@ -1,4 +1,7 @@
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Transactions;
 
 public class LinkedList : IEnumerable<int>
 {
@@ -32,7 +35,18 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void InsertTail(int value)
     {
-        // TODO Problem 1
+        Node newNode = new(value);
+        if (_tail is null)
+        {
+            _head = newNode;
+            _tail = newNode;
+        }
+        else
+        {
+            newNode.Prev = _tail;
+            _tail.Next = newNode;
+            _tail = newNode;
+        }
     }
 
 
@@ -41,7 +55,7 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void RemoveHead()
     {
-        // If the list has only one item in it, then set head and tail 
+        // If the list has only one item in it, then set head and tail
         // to null resulting in an empty list.  This condition will also
         // cover an empty list.  Its okay to set to null again.
         if (_head == _tail)
@@ -64,6 +78,21 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void RemoveTail()
     {
+        if (_tail is null)
+        {
+            return;
+        }
+        if (_head == _tail)
+        {
+            _head = null;
+            _tail = null;
+        }
+        else
+        {
+            _tail.Prev.Next = null;
+            _tail = _tail.Prev;
+
+        }
         // TODO Problem 2
     }
 
@@ -72,7 +101,7 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void InsertAfter(int value, int newValue)
     {
-        // Search for the node that matches 'value' by starting at the 
+        // Search for the node that matches 'value' by starting at the
         // head of the list.
         Node? curr = _head;
         while (curr is not null)
@@ -85,7 +114,7 @@ public class LinkedList : IEnumerable<int>
                 {
                     InsertTail(newValue);
                 }
-                // For any other location of 'value', need to create a 
+                // For any other location of 'value', need to create a
                 // new node and reconnect the links to insert.
                 else
                 {
@@ -108,7 +137,33 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Remove(int value)
     {
-        // TODO Problem 3
+        Node? curr = _head;
+        while (curr is not null)
+        {
+            if (curr.Data == value)
+            {
+                if (curr == _head)
+                {
+
+                    _head = _head.Next;
+                    if (_head is not null) _head.Prev = null;
+                    else _tail = null;
+                }
+                else if (curr == _tail)
+                {
+                    _tail = _tail.Prev;
+                    if (_tail is not null) _tail.Next = null;
+                }
+                else
+                {
+                    curr.Next!.Prev = curr.Prev;
+                    curr.Prev!.Next = curr.Next;
+                }
+
+                return;
+            }
+            curr = curr.Next;
+        }
     }
 
     /// <summary>
@@ -116,6 +171,15 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Replace(int oldValue, int newValue)
     {
+        Node curr = _head;
+        while (curr != null)
+        {
+            if (curr.Data == oldValue)
+            {
+                curr.Data = newValue;
+            }
+            curr = curr.Next;
+        }
         // TODO Problem 4
     }
 
@@ -147,11 +211,17 @@ public class LinkedList : IEnumerable<int>
     public IEnumerable Reverse()
     {
         // TODO Problem 5
-        yield return 0; // replace this line with the correct yield return statement(s)
+        Node? curr = _tail;
+        while (curr is not null)
+        {
+            yield return curr.Data;
+            curr = curr.Prev;
+        }
     }
 
     public override string ToString()
     {
+
         return "<LinkedList>{" + string.Join(", ", this) + "}";
     }
 
@@ -168,8 +238,10 @@ public class LinkedList : IEnumerable<int>
     }
 }
 
-public static class IntArrayExtensionMethods {
-    public static string AsString(this IEnumerable array) {
+public static class IntArrayExtensionMethods
+{
+    public static string AsString(this IEnumerable array)
+    {
         return "<IEnumerable>{" + string.Join(", ", array.Cast<int>()) + "}";
     }
 }
